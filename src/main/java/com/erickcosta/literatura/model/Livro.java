@@ -15,8 +15,7 @@ public class Livro {
     private String idioma;
     private Integer downloadCount;
 
-    public Livro() {
-    }
+    public Livro(){}
 
     public Livro(String titulo, String autor, String idioma, Integer downloadCount) {
         this.titulo = titulo;
