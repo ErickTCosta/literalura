@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class LivroService {
@@ -39,5 +40,18 @@ public class LivroService {
             }
         }
         return livros;
+    }
+    public List<Livro> listarTodosLivros(){
+        return livroRepository.findAll();
+    }
+
+    public Set<String> listarAutores(){
+        return livroRepository.findAll().stream()
+                .map(Livro::getAutor)
+                .collect(Collectors.toSet());
+    }
+
+    public List<Livro> listarLivrosPorIdioma(String idioma){
+        return livroRepository.findByIdioma(idioma);
     }
 }
