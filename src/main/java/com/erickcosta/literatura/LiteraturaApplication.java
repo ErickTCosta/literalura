@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 @SpringBootApplication
 public class LiteraturaApplication implements CommandLineRunner {
@@ -42,6 +43,25 @@ public class LiteraturaApplication implements CommandLineRunner {
 					List<Livro> livros = livroService.buscarSalvarLivros(termo);
 					System.out.println("\nLivros encontrados e salvos:");
 					livros.forEach(System.out::println);
+					break;
+				case 2:
+					List<Livro> todosLivros = livroService.listarTodosLivros();
+					System.out.println("\nLivros registrados:");
+					todosLivros.forEach(System.out::println);
+					break;
+				case 3:
+					Set<String> autores = livroService.listarAutores();
+					System.out.println("\nAutores registrados:");
+					autores.forEach(System.out::println);
+					break;
+				case 4:
+					break;
+				case 5:
+					System.out.println("Digite o código do idioma (ex: en, pt, fr):");
+					String idioma = scanner.nextLine();
+					List<Livro> livrosPorIdioma = livroService.listarLivrosPorIdioma(idioma);
+					System.out.println("\nLivros no idioma " + idioma + ":");
+					livrosPorIdioma.forEach(System.out::println);
 					break;
 				case 6:
 					System.out.println("Saindo...");
