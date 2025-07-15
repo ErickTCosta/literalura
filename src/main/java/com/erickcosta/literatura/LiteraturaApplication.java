@@ -98,12 +98,43 @@ public class LiteraturaApplication implements CommandLineRunner {
 
 					break;
 				case 4:
-					System.out.println("Digite o ano para verificar autores vivos:");
-					Integer ano = scanner.nextInt();
-					scanner.nextLine();
-					Set<String> autoresVivos = livroService.listarAutoresVivosNoAno(ano);
-					System.out.println("\nAutores vivos em " + ano + ":");
-					autoresVivos.forEach(System.out::println);
+					System.out.println("Insira o ano que deseja pesquisar:");
+					int ano = scanner.nextInt();
+					scanner.nextLine(); // consumir newline
+
+					List<Livro> todosLivrosAutoresVIvos = livroService.listarTodosLivros();
+
+					Map<String, List<Livro>> livrosPorAutorVivos = todosLivrosAutoresVIvos.stream()
+							.collect(Collectors.groupingBy(Livro::getAutor));
+
+					boolean encontrou = false;
+
+					for (Map.Entry<String, List<Livro>> entry : livrosPorAutorVivos.entrySet()) {
+						String autor = entry.getKey();
+						List<Livro> livrosDoAutor = entry.getValue();
+
+						Livro exemploLivro = livrosDoAutor.get(0);
+						Integer birthYear = exemploLivro.getAnoNascimentoAutor();
+						Integer deathYear = exemploLivro.getAnoFalecimentoAutor();
+
+						// Verifica se o autor estava vivo no ano
+						if (birthYear != null && deathYear != null && birthYear <= ano && deathYear >= ano) {
+							System.out.println("Autor: " + autor);
+							System.out.println("Ano de nascimento: " + birthYear);
+							System.out.println("Ano de falecimento: " + deathYear);
+							List<String> titulos = livrosDoAutor.stream()
+									.map(Livro::getTitulo)
+									.toList();
+							System.out.println("Livros: " + titulos);
+							System.out.println("-----------------");
+							encontrou = true;
+						}
+					}
+
+					if (!encontrou) {
+						System.out.println("Nenhum autor encontrado vivo neste ano.");
+					}
+
 					break;
 				case 5:
 					System.out.println("Digite o código do idioma (ex: en, pt, fr):");
