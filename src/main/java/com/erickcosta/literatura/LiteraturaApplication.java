@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -38,11 +39,22 @@ public class LiteraturaApplication implements CommandLineRunner {
 
 			switch (opcao) {
 				case 1:
-					System.out.println("Digite o termo de busca:");
-					String termo = scanner.nextLine();
-					List<Livro> livros = livroService.buscarSalvarLivros(termo);
-					System.out.println("\nLivros encontrados e salvos:");
-					livros.forEach(System.out::println);
+					System.out.println("Insira o nome do livro que você deseja procurar:");
+					String titulo = scanner.nextLine();
+
+					Optional<Livro> livroOptional = livroService.buscarLivroPorTitulo(titulo);
+
+					if (livroOptional.isPresent()) {
+						Livro livro = livroOptional.get();
+						System.out.println("----- LIVRO -----");
+						System.out.println("Título: " + livro.getTitulo());
+						System.out.println("Autor: " + livro.getAutor());
+						System.out.println("Idioma: " + livro.getIdioma());
+						System.out.println("Número de downloads: " + livro.getDownloadCount());
+						System.out.println("-----------------");
+					} else {
+						System.out.println("Livro não encontrado.");
+					}
 					break;
 				case 2:
 					List<Livro> todosLivros = livroService.listarTodosLivros();
