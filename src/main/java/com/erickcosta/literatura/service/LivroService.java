@@ -31,10 +31,13 @@ public class LivroService {
         if (response != null && response.getResults() != null) {
             for (GutendexBook b : response.getResults()) {
                 String autor = b.getAuthors().isEmpty() ? "Desconhecido" : b.getAuthors().get(0).getName();
+                Integer birth = b.getAuthors().isEmpty() ? null : b.getAuthors().get(0).getBirth_year();
+                Integer death = b.getAuthors().isEmpty() ? null : b.getAuthors().get(0).getDeath_year();
                 String idioma = b.getLanguages().isEmpty() ? "N/A" : b.getLanguages().get(0);
                 Integer downloads = b.getDownload_count() != null ? b.getDownload_count() : 0;
 
-                Livro livro = new Livro(b.getTitle(), autor, idioma, downloads);
+
+                Livro livro = new Livro(b.getTitle(), autor, idioma, downloads, birth, death);
                 livros.add(livro);
                 livroRepository.save(livro);
             }
@@ -53,5 +56,13 @@ public class LivroService {
 
     public List<Livro> listarLivrosPorIdioma(String idioma){
         return livroRepository.findByIdioma(idioma);
+    }
+
+    public Set<String> listarAutoresVivosNoAno(Integer ano) {
+        return livroRepository.findAll().stream()
+                .filter((l -> (l.getAnoNascimentoAutor() == null || l.getAnoNascimentoAutor() <= ano) &&
+                        l.getAnoFalecimentoAutor()== null || l.getAnoFalecimentoAutor() >=ano))
+                .map(Livro::getAutor)
+                .collect(Collectors.toSet());
     }
 }
