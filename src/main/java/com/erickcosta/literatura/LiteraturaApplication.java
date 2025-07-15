@@ -7,10 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class LiteraturaApplication implements CommandLineRunner {
@@ -72,9 +70,32 @@ public class LiteraturaApplication implements CommandLineRunner {
 					}
 					break;
 				case 3:
-					Set<String> autores = livroService.listarAutores();
-					System.out.println("\nAutores registrados:");
-					autores.forEach(System.out::println);
+					List<Livro> todosLivrosAutores = livroService.listarTodosLivros();
+
+					Map<String, List<Livro>> livrosPorAutor = todosLivrosAutores.stream()
+							.collect(Collectors.groupingBy(Livro::getAutor));
+
+					for (Map.Entry<String, List<Livro>> entry : livrosPorAutor.entrySet()) {
+						String autor = entry.getKey();
+						List<Livro> livrosDoAutor = entry.getValue();
+
+						// Pegamos primeiro livro só para exibir birth e death year (pois todos do mesmo autor devem ter igual)
+						Livro exemploLivro = livrosDoAutor.get(0);
+
+						System.out.println("Autor: " + autor);
+						System.out.println("Ano de nascimento: " +
+								(exemploLivro.getAnoNascimentoAutor() != null ? exemploLivro.getAnoNascimentoAutor() : "Desconhecido"));
+						System.out.println("Ano de falecimento: " +
+								(exemploLivro.getAnoFalecimentoAutor() != null ? exemploLivro.getAnoFalecimentoAutor() : "Desconhecido"));
+
+						// Lista títulos
+						List<String> titulos = livrosDoAutor.stream()
+								.map(Livro::getTitulo)
+								.toList();
+						System.out.println("Livros: " + titulos);
+						System.out.println("-----------------");
+					}
+
 					break;
 				case 4:
 					System.out.println("Digite o ano para verificar autores vivos:");
