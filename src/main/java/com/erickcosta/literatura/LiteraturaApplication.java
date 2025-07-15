@@ -58,8 +58,18 @@ public class LiteraturaApplication implements CommandLineRunner {
 					break;
 				case 2:
 					List<Livro> todosLivros = livroService.listarTodosLivros();
-					System.out.println("\nLivros registrados:");
-					todosLivros.forEach(System.out::println);
+					if (todosLivros.isEmpty()) {
+						System.out.println("Nenhum livro registrado.");
+					} else {
+						for (Livro livro : todosLivros) {
+							System.out.println("----- LIVRO -----");
+							System.out.println("Título: " + livro.getTitulo());
+							System.out.println("Autor: " + livro.getAutor());
+							System.out.println("Idioma: " + livro.getIdioma());
+							System.out.println("Número de downloads: " + livro.getDownloadCount());
+							System.out.println("-----------------");
+						}
+					}
 					break;
 				case 3:
 					Set<String> autores = livroService.listarAutores();
