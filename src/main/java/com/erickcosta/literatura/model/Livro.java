@@ -15,13 +15,18 @@ public class Livro {
     private String idioma;
     private Integer downloadCount;
 
+    private Integer anoNascimentoAutor;
+    private Integer anoFalecimentoAutor;
+
     public Livro(){}
 
-    public Livro(String titulo, String autor, String idioma, Integer downloadCount) {
+    public Livro(String titulo, String autor, String idioma, Integer downloadCount, Integer anoNascimentoAutor, Integer anoFalecimentoAutor) {
         this.titulo = titulo;
         this.autor = autor;
         this.idioma = idioma;
         this.downloadCount = downloadCount;
+        this.anoNascimentoAutor = anoNascimentoAutor;
+        this.anoFalecimentoAutor = anoFalecimentoAutor;
     }
 
     // Getters e setters
@@ -46,6 +51,10 @@ public class Livro {
         return downloadCount;
     }
 
+    public  Integer getAnoNascimentoAutor() {return anoNascimentoAutor;}
+
+    public Integer getAnoFalecimentoAutor() { return anoFalecimentoAutor;}
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -66,6 +75,10 @@ public class Livro {
         this.downloadCount = downloadCount;
     }
 
+    public void  setAnoNascimentoAutor(Integer anoNascimentoAutor){this.anoNascimentoAutor = anoNascimentoAutor;}
+
+    public void  setAnoFalecimentoAutor(Integer anoFalecimentoAutor) {this.anoFalecimentoAutor = anoFalecimentoAutor;}
+
     @Override
     public String toString() {
         return "Livro{" +
@@ -74,6 +87,8 @@ public class Livro {
                 ", autor='" + autor + '\'' +
                 ", idioma='" + idioma + '\'' +
                 ", downloadCount=" + downloadCount +
+                ", anoNascimento=Autor" + anoNascimentoAutor +
+                ", anoFalecimentoAutor" + anoFalecimentoAutor +
                 '}';
     }
 }
