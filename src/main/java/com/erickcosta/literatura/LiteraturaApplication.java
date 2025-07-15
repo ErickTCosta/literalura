@@ -55,6 +55,12 @@ public class LiteraturaApplication implements CommandLineRunner {
 					autores.forEach(System.out::println);
 					break;
 				case 4:
+					System.out.println("Digite o ano para verificar autores vivos:");
+					Integer ano = scanner.nextInt();
+					scanner.nextLine();
+					Set<String> autoresVivos = livroService.listarAutoresVivosNoAno(ano);
+					System.out.println("\nAutores vivos em " + ano + ":");
+					autoresVivos.forEach(System.out::println);
 					break;
 				case 5:
 					System.out.println("Digite o código do idioma (ex: en, pt, fr):");
