@@ -137,11 +137,28 @@ public class LiteraturaApplication implements CommandLineRunner {
 
 					break;
 				case 5:
-					System.out.println("Digite o código do idioma (ex: en, pt, fr):");
+					System.out.println("Insira o idioma para realizar a busca:");
+					System.out.println("es- espanhol");
+					System.out.println("en- inglês");
+					System.out.println("fr- francês");
+					System.out.println("pt- português");
+
 					String idioma = scanner.nextLine();
+
 					List<Livro> livrosPorIdioma = livroService.listarLivrosPorIdioma(idioma);
-					System.out.println("\nLivros no idioma " + idioma + ":");
-					livrosPorIdioma.forEach(System.out::println);
+
+					if (livrosPorIdioma.isEmpty()) {
+						System.out.println("Nenhum livro encontrado para o idioma selecionado.");
+					} else {
+						for (Livro livro : livrosPorIdioma) {
+							System.out.println("----- LIVRO -----");
+							System.out.println("Título: " + livro.getTitulo());
+							System.out.println("Autor: " + livro.getAutor());
+							System.out.println("Idioma: " + livro.getIdioma());
+							System.out.println("Número de downloads: " + livro.getDownloadCount());
+							System.out.println("-----------------");
+						}
+					}
 					break;
 				case 6:
 					System.out.println("Saindo...");
