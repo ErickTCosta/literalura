@@ -22,27 +22,28 @@ public class LivroService {
     private RestTemplate restTemplate;
     private final String URL_API = "https://gutendex.com/books/?search=";
 
-    public List<Livro> buscarSalvarLivros(String termo) {
-        String url = URL_API + termo;
+    public Optional<Livro> buscarLivroPorTitulo(String titulo) {
+        String url = URL_API + titulo;
 
         GutendexResponse response = restTemplate.getForObject(url, GutendexResponse.class);
-        List<Livro> livros = new ArrayList<>();
 
         if (response != null && response.getResults() != null) {
             for (GutendexBook b : response.getResults()) {
-                String autor = b.getAuthors().isEmpty() ? "Desconhecido" : b.getAuthors().get(0).getName();
-                Integer birth = b.getAuthors().isEmpty() ? null : b.getAuthors().get(0).getBirth_year();
-                Integer death = b.getAuthors().isEmpty() ? null : b.getAuthors().get(0).getDeath_year();
-                String idioma = b.getLanguages().isEmpty() ? "N/A" : b.getLanguages().get(0);
-                Integer downloads = b.getDownload_count() != null ? b.getDownload_count() : 0;
+                if (b.getTitle().equalsIgnoreCase(titulo)) {
+                    String autor = b.getAuthors().isEmpty() ? "Desconhecido" : b.getAuthors().get(0).getName();
+                    Integer birth = b.getAuthors().isEmpty() ? null : b.getAuthors().get(0).getBirth_year();
+                    Integer death = b.getAuthors().isEmpty() ? null : b.getAuthors().get(0).getDeath_year();
+                    String idioma = b.getLanguages().isEmpty() ? "N/A" : b.getLanguages().get(0);
+                    Integer downloads = b.getDownload_count() != null ? b.getDownload_count() : 0;
 
 
-                Livro livro = new Livro(b.getTitle(), autor, idioma, downloads, birth, death);
-                livros.add(livro);
-                livroRepository.save(livro);
+                    Livro livro = new Livro(b.getTitle(), autor, idioma, downloads, birth, death);
+                    livroRepository.save(livro);
+                    return Optional.of(livro);
+                }
             }
         }
-        return livros;
+        return Optional.empty();
     }
     public List<Livro> listarTodosLivros(){
         return livroRepository.findAll();
