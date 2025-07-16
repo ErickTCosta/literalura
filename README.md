@@ -83,7 +83,7 @@ Este projeto está sob a licença MIT.
 
 ### 💬 Contato
 
-Erick Costa — [LinkedIn](https://www.linkedin.com/in/ericktcosta/) — [ericktcosta.dev@gmail.com](mailto:ericktcosta.dev@gmail.com)
+Erick Costa — [LinkedIn](https://www.linkedin.com/in/ericktcosta/) — [erick.pt.costa.dev@gmail.com](mailto:erick.pt.costa.dev@gmail.com)
 
 ```
 
